@@ -13,7 +13,12 @@ export default function AddTodo() {
     if (!title.trim()) return
 
     const supabase = createClient()
-    await supabase.from('todos').insert({ title: title.trim() })
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) return
+
+    await supabase.from('todos').insert({ title: title.trim(), user_id: user.id })
     setTitle('')
     router.refresh()
   }
