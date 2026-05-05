@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import AddTodo from '@/components/AddTodo'
 import TodoList from '@/components/TodoList'
 import SignOutButton from '@/components/SignOutButton'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 export type Todo = {
   id: string
@@ -32,8 +33,12 @@ export default async function Home() {
         <SignOutButton />
       </div>
       <p className="text-xs text-gray-400 mb-6">{user.email}</p>
-      <AddTodo />
-      <TodoList todos={todos ?? []} />
+      <ErrorBoundary>
+        <AddTodo />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <TodoList todos={todos ?? []} />
+      </ErrorBoundary>
     </main>
   )
 }
